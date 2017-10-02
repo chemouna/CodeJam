@@ -1,7 +1,7 @@
 
 (ns codejam-clj.nextnumber)
 
-(use 'clojure.contrib.combinatorics)
+(use 'clojure.math.combinatorics)
 
 (defn permute-number [n]
   (map #(read-string (.replaceFirst (apply str %) "^0+" ""))
