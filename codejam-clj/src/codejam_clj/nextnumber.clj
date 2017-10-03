@@ -8,7 +8,7 @@
        (permutations (seq (str n)))))
 
 (defn next-number [n m]
-  (first (filter #(> % m) (sort <  (permute-number n)))))
+  (first (filter #(> % m) (sort < (permute-number n)))))
 
 (defn find-next-number [n]
   (let [i (next-number n n)]
