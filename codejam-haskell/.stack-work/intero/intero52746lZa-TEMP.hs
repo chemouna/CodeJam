@@ -44,8 +44,16 @@ isTidy2 :: Int -> Bool
 isTidy2 n = sort sn == sn
   where sn = show n
 
--- latestTidyNumber :: Integer -> Integer
-latestTidyNumber n = filter (\x -> x < n && (isTidy2 x))  (map (\x -> read x :: Integer) (permutations (show n)))
+closestNumber :: Int -> [Int] -> Int
+closestNumber n xs = snd $ minimum $ (zip =<< map(abs.(n-))) xs
+
+strsToInt :: [String] -> [Int]
+strsToInt = map (\x -> read x :: Int)
+
+latestTidyNumber :: Int -> Int
+latestTidyNumber n =  head latestWithCurrentNumbers
+  where
+    latestWithCurrentNumbers = filter (\x -> x < n && (isTidy2 x) && length x >= (length n - 1))  (map (\x -> read x :: Int) (permutations (show n)))
 
 {--
 main3 = do
@@ -55,4 +63,3 @@ main3 = do
     putStr $ "Case #" ++ show c ++ ": "
     print $ latestTidyNumber n
 --}
-
