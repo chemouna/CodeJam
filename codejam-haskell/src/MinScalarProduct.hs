@@ -26,6 +26,8 @@ dot v1 v2 = zipWith (*) v1 v2
 minScalarProduct4 :: [Int] -> [Int] -> Int
 minScalarProduct4 a = sum . zipWith (*) (sort a) . reverse . sort
 
+-- '#' represents the scalar product  
+as#bs = sum $ zipWith (*) (sort as) $ sortBy (flip $ compare) bs
 
 one_case :: Int -> IO ()
 one_case i = do
