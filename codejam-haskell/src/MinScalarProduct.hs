@@ -22,12 +22,17 @@ minScalarProduct3 v1 v2 = sum $ (sort v1) `dot` (reverse $ sort v2)
 
 dot v1 v2 = zipWith (*) v1 v2
 
+-- another way to write it is to ommit explicitly declaring the second vector and use point free
+minScalarProduct4 :: [Int] -> [Int] -> Int
+minScalarProduct4 a = sum . zipWith (*) (sort a) . reverse . sort
+
+
 one_case :: Int -> IO ()
 one_case i = do
   n <- liftM read getLine :: IO Int
   a <- liftM (map read . words) getLine
   b <- liftM (map read . words) getLine
-  putStrLn ("Case #" ++ show i ++ ": " ++ show (minScalarProduct3 a b))
+  putStrLn ("Case #" ++ show i ++ ": " ++ show (minScalarProduct4 a b))
 
 main :: IO ()
 main = do
