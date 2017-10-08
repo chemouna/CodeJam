@@ -12,7 +12,7 @@ class Milshakes {
     lateinit var input: BufferedReader
     lateinit var tokenizer: StringTokenizer
 
-    fun main(args: Array<String>) {
+    private fun solve() {
         try {
             input = BufferedReader(InputStreamReader(System.`in`))
             tokenizer = StringTokenizer("")
@@ -56,7 +56,7 @@ class Milshakes {
                     }
                     ans[b[i]] = true
 
-                    for(j in 0 until m) {
+                    for (j in 0 until m) {
                         if (a[j][b[i]]) {
                             a[j][b[i]] = false //!Ъ //?
                             l[j]--
@@ -69,7 +69,7 @@ class Milshakes {
                 out.print("Case #" + (c + 1) + ": ")
 
                 ans.forEach { v ->
-                    if(v) {
+                    if (v) {
                         out.println(1.toString() + " ")
                     } else {
                         println(0.toString() + " ")
@@ -103,5 +103,13 @@ class Milshakes {
 
     private fun array2dOfBoolean(sizeOuter: Int, sizeInner: Int): Array<BooleanArray>
             = Array(sizeOuter) { BooleanArray(sizeInner) }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val milshakes = Milshakes()
+            milshakes.solve()
+        }
+    }
 
 }
