@@ -21,26 +21,26 @@ class Milshakes {
             val cases = nextInt()
 
             for (c in 0..cases) {
-                val n = nextInt() //nb of customers
-                val m = nextInt() //nb of milshakes
-                val a = array2dOfBoolean(n, m)
+                val n = nextInt() //nb of milkshake flavors
+                val m = nextInt() //nb of customers
+                val a = array2dOfBoolean(n, m) // array of customers  milshakes flavors where a[i][j] is true when customer i is assigned a unmalted milshake j
                 val l = IntArray(m)
-                val b = IntArray(m)
-                Arrays.fill(b, -1)
+                val b = IntArray(m) // contains whether a customer has a malted milshake
+                Arrays.fill(b, -1) // so if b[i] is != -1 => customer i has a malted milshake of index b[i]
                 val st = ArrayList<Int>()
                 val ans = BooleanArray(n)
                 for (i in 0 until m) {
                     val t = nextInt() //nb of milshakes a customer likes
                     for (j in 0 until t) { //for each we get what type the customer likes and if it is malted or unmalted
-                        val u = nextInt() - 1 //since milshakes array start with 0 we do -1 to get it
+                        val u = nextInt() - 1 //index of milshake the customer likes : since milshakes array start with 0 we do -1 to get it
                         val v = nextInt() // whether its malted or not
                         if (v == 1) { // malted
                             b[i] = u
                         } else {
-                            if (!a[i][u]) {
+                            if (!a[i][u]) { // if customer i is not assigned already the milshake he likes and since he wants unmalted flavor we increase nb of unmalted flavor for customer i
                                 l[i]++ //increased nb of unmalted batches
                             }
-                            a[i][u] = true//b //? should it be true ?
+                            a[i][u] = true
                         }
                     }
                     if (l[i] == 0) {
