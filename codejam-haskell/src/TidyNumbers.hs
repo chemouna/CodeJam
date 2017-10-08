@@ -42,7 +42,7 @@ main2 = do
 
 isTidy2 :: Int -> Bool
 isTidy2 n = sort sn == sn
-  where sn = show n
+  where sn = show n§
 
 closestNumber :: Int -> [Int] -> Int
 closestNumber n xs = snd $ minimum $ (zip =<< map(abs.(n-))) xs
