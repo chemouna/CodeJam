@@ -1,5 +1,6 @@
 package com.mounacheikhna.cj2008
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import java.io.PrintWriter
 import java.io.InputStreamReader
 import java.io.BufferedReader
@@ -54,6 +55,24 @@ class Milshakes {
         out.println()
     }
 
+    //TODO: rename
+    private fun gatherInput(m: Int): List<CustomerInput> {
+        val inp = mutableListOf<CustomerInput>()
+        for (i in 0 until m) {
+            val t = nextInt()
+            val likes = mutableListOf<Pair<Int, Int>>()
+            for (j in 0 until t) {
+                val u = nextInt() - 1
+                val v = nextInt()
+                likes.add(Pair(u, v))
+            }
+            inp.add(CustomerInput(t, likes))
+        }
+        return inp
+    }
+
+    data class CustomerInput(val nbLikes: Int, val likes: List<Pair<Int, Int>>)
+
     private fun solveCase(m: Int, n: Int): BooleanArray {
         val a = array2dOfBoolean(m, n) // ? array of customers  milshakes flavors where a[i][j] is true when customer i is assigned a unmalted milshake j
         val l = IntArray(m)
@@ -61,11 +80,10 @@ class Milshakes {
         Arrays.fill(b, -1) // so if b[i] is != -1 => customer i has a malted milshake of index b[i]
         val st = ArrayList<Int>()
         val ans = BooleanArray(n)
-        for (i in 0 until m) {
-            val t = nextInt() //nb of milshakes a customer likes
-            for (j in 0 until t) { //for each we get what type the customer likes and if it is malted or unmalted
-                val u = nextInt() - 1 //index of milshake the customer likes : since milshakes array start with 0 we do -1 to get it
-                val v = nextInt() // whether its malted or not
+
+        val customers = gatherInput(m)
+        customers.forEachIndexed { i, (_, likes) ->
+            likes.forEach { (u, v) ->
                 if (v == 1) { // malted
                     b[i] = u
                 } else {
@@ -117,6 +135,9 @@ class Milshakes {
 
     private fun array2dOfBoolean(sizeOuter: Int, sizeInner: Int): Array<BooleanArray>
             = Array(sizeOuter) { BooleanArray(sizeInner) }
+
+    private fun array2dOfInt(sizeOuter: Int, sizeInner: Int): Array<IntArray>
+            = Array(sizeOuter) { IntArray(sizeInner) }
 
     companion object {
         @JvmStatic
