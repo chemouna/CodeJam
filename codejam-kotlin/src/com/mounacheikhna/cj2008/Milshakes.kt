@@ -11,80 +11,94 @@ class Milshakes {
 
     lateinit var input: BufferedReader
     lateinit var tokenizer: StringTokenizer
+    lateinit var out: PrintWriter
 
     private fun solve() {
         try {
             input = BufferedReader(InputStreamReader(System.`in`))
             tokenizer = StringTokenizer("")
-            val out = PrintWriter(System.out)
+            out = PrintWriter(System.out)
 
             val cases = nextInt()
 
             for (c in 0..cases) {
                 val n = nextInt() //nb of milkshake flavors
                 val m = nextInt() //nb of customers
-                val a = array2dOfBoolean(n, m) // array of customers  milshakes flavors where a[i][j] is true when customer i is assigned a unmalted milshake j
-                val l = IntArray(m)
-                val b = IntArray(m) // contains whether a customer has a malted milshake
-                Arrays.fill(b, -1) // so if b[i] is != -1 => customer i has a malted milshake of index b[i]
-                val st = ArrayList<Int>()
-                val ans = BooleanArray(n)
-                for (i in 0 until m) {
-                    val t = nextInt() //nb of milshakes a customer likes
-                    for (j in 0 until t) { //for each we get what type the customer likes and if it is malted or unmalted
-                        val u = nextInt() - 1 //index of milshake the customer likes : since milshakes array start with 0 we do -1 to get it
-                        val v = nextInt() // whether its malted or not
-                        if (v == 1) { // malted
-                            b[i] = u
-                        } else {
-                            if (!a[i][u]) { // if customer i is not assigned already the milshake he likes and since he wants unmalted flavor we increase nb of unmalted flavor for customer i
-                                l[i]++ //increased nb of unmalted batches
-                            }
-                            a[i][u] = true
-                        }
-                    }
-                    if (l[i] == 0) {
-                        st.add(i)
-                    }
+
+                val ans = solveCase(m, n)
+
+                if (ans.all { !it }) {
+                    out.println("Case #" + (c + 1) + ": IMPOSSIBLE")
                 }
-
-                while (st.size > 0) {
-                    val i = st.removeAt(st.size - 1)
-                    if (b[i] == -1) {
-                        out.println("Case #" + (c + 1) + ": IMPOSSIBLE");
-                        break //TODO : make an inner function and make it return false in this case then go to next case if false is returned
-                    }
-                    ans[b[i]] = true
-
-                    for (j in 0 until m) {
-                        if (a[j][b[i]]) {
-                            a[j][b[i]] = false //!Ъ //?
-                            l[j]--
-                            if (l[j] == 0) {
-                                st.add(j)
-                            }
-                        }
-                    }
+                else {
+                    printPossibleCaseResults(c, ans)
                 }
-                out.print("Case #" + (c + 1) + ": ")
-
-                ans.forEach { v ->
-                    if (v) {
-                        out.println(1.toString() + " ")
-                    } else {
-                        println(0.toString() + " ")
-                    }
-                }
-
-                out.println()
             }
 
-            //solveCase()
             out.close()
         } catch (ex: Exception) {
             ex.printStackTrace()
             System.exit(-1)
         }
+    }
+
+    private fun printPossibleCaseResults(c: Int, ans: BooleanArray) {
+        out.print("Case #" + (c + 1) + ": ")
+        ans.forEach { v ->
+            if (v) {
+                out.println(1.toString() + " ")
+            } else {
+                println(0.toString() + " ")
+            }
+        }
+        out.println()
+    }
+
+    private fun solveCase(m: Int, n: Int): BooleanArray {
+        val a = array2dOfBoolean(m, n) // ? array of customers  milshakes flavors where a[i][j] is true when customer i is assigned a unmalted milshake j
+        val l = IntArray(m)
+        val b = IntArray(m) // contains whether a customer has a malted milshake
+        Arrays.fill(b, -1) // so if b[i] is != -1 => customer i has a malted milshake of index b[i]
+        val st = ArrayList<Int>()
+        val ans = BooleanArray(n)
+        for (i in 0 until m) {
+            val t = nextInt() //nb of milshakes a customer likes
+            for (j in 0 until t) { //for each we get what type the customer likes and if it is malted or unmalted
+                val u = nextInt() - 1 //index of milshake the customer likes : since milshakes array start with 0 we do -1 to get it
+                val v = nextInt() // whether its malted or not
+                if (v == 1) { // malted
+                    b[i] = u
+                } else {
+                    if (!a[i][u]) { // if customer i is not assigned already the milshake he likes and since he wants unmalted flavor we increase nb of unmalted flavor for customer i
+                        l[i]++ //increased nb of unmalted batches
+                    }
+                    a[i][u] = true
+                }
+            }
+            if (l[i] == 0) {
+                st.add(i)
+            }
+        }
+
+        while (st.size > 0) {
+            val i = st.removeAt(st.size - 1)
+            if (b[i] == -1) {
+                //TODO : make an inner function and make it return false in this case then go to next case if false is returned
+                return ans
+            }
+            ans[b[i]] = true
+
+            for (j in 0 until m) {
+                if (a[j][b[i]]) {
+                    a[j][b[i]] = false //!Ъ //?
+                    l[j]--
+                    if (l[j] == 0) {
+                        st.add(j)
+                    }
+                }
+            }
+        }
+        return ans
     }
 
     @Throws(IOException::class)
