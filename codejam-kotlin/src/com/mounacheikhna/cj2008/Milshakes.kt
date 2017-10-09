@@ -1,6 +1,5 @@
 package com.mounacheikhna.cj2008
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import java.io.PrintWriter
 import java.io.InputStreamReader
 import java.io.BufferedReader
@@ -26,7 +25,8 @@ class Milshakes {
                 val n = nextInt() //nb of milkshake flavors
                 val m = nextInt() //nb of customers
 
-                val ans = solveCase(m, n)
+                val customers = gatherInput(m)
+                val ans = solveCase(m, n, customers)
 
                 if (ans.all { !it }) {
                     out.println("Case #" + (c + 1) + ": IMPOSSIBLE")
@@ -73,7 +73,7 @@ class Milshakes {
 
     data class CustomerInput(val nbLikes: Int, val likes: List<Pair<Int, Int>>)
 
-    private fun solveCase(m: Int, n: Int): BooleanArray {
+    private fun solveCase(m: Int, n: Int, customers: List<CustomerInput>): BooleanArray {
         val a = array2dOfBoolean(m, n) // ? array of customers  milshakes flavors where a[i][j] is true when customer i is assigned a unmalted milshake j
         val l = IntArray(m)
         val b = IntArray(m) // contains whether a customer has a malted milshake
@@ -81,7 +81,6 @@ class Milshakes {
         val st = ArrayList<Int>()
         val ans = BooleanArray(n)
 
-        val customers = gatherInput(m)
         customers.forEachIndexed { i, (_, likes) ->
             likes.forEach { (u, v) ->
                 if (v == 1) { // malted
