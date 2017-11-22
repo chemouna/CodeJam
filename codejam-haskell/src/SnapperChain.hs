@@ -2,6 +2,7 @@
 module SnapperChain where
 
 import Data.Bits
+import Data.Bool
 
 type SnapperChain = [Bool]
 
@@ -41,3 +42,13 @@ caseAlgorithm n k =
 solve :: Int -> Int -> String
 solve n k = if k .&. a == a then "ON" else "OFF"
     where a = (2 ^ n) - 1
+
+-- Another brute force solution by simulation
+
+solve_brute n k = bool "OFF" "ON" $ and $ iterate snap (replicate n False) !! k
+
+snap [] = []
+snap (x:xs) = (x /= and xs) : snap xs
+
+-- Solution 3
+solve'' n k = bool "OFF" "ON" $ (k + 1) `mod` 2^n == 0
