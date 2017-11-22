@@ -1,4 +1,3 @@
-
 module SnapperChain where
 
 import Data.Bits
@@ -6,30 +5,25 @@ import Data.Bool
 
 type SnapperChain = [Bool]
 
--- A solution that is almost direct translation of the problem 
+-- A solution that is almost direct translation of the problem
 snapOnOff :: SnapperChain -> SnapperChain
 snapOnOff [] = []
 snapOnOff (c:cs) =
     if isPowered cs
-        then toggleState c : snapOnOff cs
-        else c : snapOnOff cs
+        then  snapOnOff cs ++ [toggleState c]
+        else  snapOnOff cs ++ [c]
 
 isPowered :: SnapperChain -> Bool
-isPowered []     = True 
+isPowered []     = True
 isPowered (c:cs) = inOnState c && isPowered cs
 
 inOnState = id
 toggleState = not
 
-increment :: SnapperChain -> SnapperChain
-increment [] = [] -- [] is the outlet
-increment chain@(c:cs)
-    | and cs = map not chain
-    | otherwise = c : increment cs
-
 showBinary :: SnapperChain -> String
 showBinary = map (\b-> if b then '1' else '0')
 
+-- take 4 $ iterate snapOnOff [False,False,False]
 
 -- Simpler Solution 1
 caseAlgorithm :: Int -> Int -> String
@@ -42,6 +36,8 @@ caseAlgorithm n k =
 solve :: Int -> Int -> String
 solve n k = if k .&. a == a then "ON" else "OFF"
     where a = (2 ^ n) - 1
+
+
 
 -- Another brute force solution by simulation
 
