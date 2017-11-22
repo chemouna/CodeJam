@@ -1,6 +1,8 @@
 
 module SnapperChain where
 
+import Data.Bits
+
 type SnapperChain = [Bool]
 
 -- A solution that is almost direct translation of the problem 
@@ -28,12 +30,14 @@ showBinary :: SnapperChain -> String
 showBinary = map (\b-> if b then '1' else '0')
 
 
---
-
-
+-- Simpler Solution 1
 caseAlgorithm :: Int -> Int -> String
 caseAlgorithm n k =
     if (((k+1) `mod` 2^n) == 0)
         then "ON"
         else "OFF"
 
+-- Solution 2
+solve :: Int -> Int -> String
+solve n k = if k .&. a == a then "ON" else "OFF"
+    where a = (2 ^ n) - 1
